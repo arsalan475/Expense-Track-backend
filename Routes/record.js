@@ -4,6 +4,7 @@ import { record } from '../Model/recordModel.js';
 import sendFilterdRecord from '../utils/filterRecords.js';
 import { user } from '../Model/UserModel.js';
 import { Expense } from '../Model/ExpenseModel.js';
+import { ApiError } from '../utils/apiError.js';
 
 
 const recordRouter = express.Router();
@@ -16,16 +17,20 @@ recordRouter.post('/addincome',authenticated,async function(req,res){
     try{
 
         const recordAdded = await record.create({income,month,date,user:req.user})
+
+        if(!recordAdded) throw new ApiError(400,'','connection losed reload or try later')
         
        const User = await user.findById(req.user._id);
+
+       if(!User) throw new ApiError(400,'','connection losed reload or try later')
 
        User.userRecords.push(recordAdded);
 
        const check =     await  User.save({validateBeforeSave:false})
        
-        res.json({data : recordAdded,check:check})
+        res.status(200).json({data : recordAdded,check:check})
         }catch(error){
-            res.status(404).json({success:false,message:error.message})
+            res.status(400).json(new ApiError(400,'',e.errors))
           
         }
 
@@ -33,52 +38,6 @@ recordRouter.post('/addincome',authenticated,async function(req,res){
     
 })
 
-recordRouter.get('/getrecord',authenticated,async function(req,res){
-
-    const {year,month,date} = req.query
-    const id = req.user._id
-
-    if(year) {
-        if(!month && !date){
-            const recordByYear = await record.find({year,user:id})
-            sendFilterdRecord(req,res,recordByYear)
-            
-            }
-    } 
-
-    if(month) {
-        if(!year && !date){
-            const recordByMonth = await record.find({month,user:id})
-            sendFilterdRecord(req,res,recordByMonth)
-            
-            }
-    } 
-
-
-    if(date) {
-        if(!month && !year){
-            const recordByDate = await record.find({$and:[{date:{$gte:date}},{date:{$lte:23}}],user:id})
-            sendFilterdRecord(req,res,recordByDate)
-            
-            }
-    } 
-
-    if(year && month ) {
-        if(!date){
-            const recordByYearMonth = await record.find({year,month,user:id})
-            sendFilterdRecord(req,res,recordByYearMonth)
-            }
-    } 
-
-    if(year && month && date){
-        
-        const recordByYearMonthDate = await record.find({year,month,date,user:id})
-        sendFilterdRecord(req,res,recordByYearMonthDate)
-    }
-
-
-
-})
 
 
 recordRouter.get('/getallrecords',authenticated,async function(req,res){
@@ -110,7 +69,7 @@ recordRouter.post('/closerecord',authenticated,async function(req,res){
     try {
         const User = await user.findById(id);
     
-        if(!User) throw new Error('No such user')
+        if(!User) throw new ApiError(500,'','connection failed')
     
           const numOfEntries = await  Expense.find({user:User._id}).countDocuments()
           const data = await  Expense.find({user:User._id})
@@ -130,7 +89,7 @@ recordRouter.post('/closerecord',authenticated,async function(req,res){
     
             res.json({lastEntry:editedEntries});
     } catch (error) {
-        console.error(error.message)
+        res.status(500).json(new ApiError(500,'',error.errors))
     }
 })
 
