@@ -19,11 +19,13 @@ const app = express()
 
 app.use(cors(
     {
-        origin: 'https://great-sad-mclaren.cidemo.co/',
+        origin: 'http://localhost:5173',
         
         credentials:true,
     }
 ))
+
+
 
 app.use(express.json())
 
