@@ -1,7 +1,7 @@
 import express, { Router } from 'express'
 import authenticated from '../middleware/auth.js';
-import { record } from '../Model/recordModel.js';
-import sendFilterdRecord from '../utils/filterRecords.js';
+import { record } from '../Model/RecordModel.js';
+
 import { user } from '../Model/UserModel.js';
 import { Expense } from '../Model/ExpenseModel.js';
 import { ApiError } from '../utils/apiError.js';
