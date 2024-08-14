@@ -3,7 +3,6 @@ import { Expense } from '../Model/ExpenseModel.js';
 import authenticated from '../middleware/auth.js';
 import { user } from '../Model/UserModel.js';
 import sendFilterdRecord from '../utils/filterRecords.js';
-import { record } from '../Model/recordModel.js';
 import { ApiError } from '../utils/apiError.js';
 
 const expenseRouter = express.Router()
