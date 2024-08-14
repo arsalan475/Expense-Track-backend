@@ -19,10 +19,10 @@ const app = express()
 
 app.use(cors(
     {
-        origin: 'https://expensetrackerapp21.netlify.app/',
-        
+        origin: ['https://expensetrackerapp21.netlify.app'],
+        methods:['GET','POST','PUT','DELETE'],
         credentials:true,
-    }
+    } 
 ))
 
 

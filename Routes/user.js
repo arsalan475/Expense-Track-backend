@@ -25,7 +25,11 @@ try {
         
         if(!data) throw new ApiError('500','','Please try later')
             
-            res.cookie("token",data._id)
+            res.cookie("token",data._id,{
+                httpOnly: true,
+                sameSite:   process.env.NODE_ENV === 'dev' ? "lax" : "none",
+                secure:process.env.NODE_ENV === 'dev' ? false : true,
+            })
             
         res.send('user Registered successfully')
 } catch (error) {
