@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { record } from './recordModel.js'
+import { record } from './RecordModel.js'
 
 import bcrypt from 'bcryptjs'
 import validator from 'validator'
