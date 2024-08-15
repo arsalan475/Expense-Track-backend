@@ -57,7 +57,11 @@ try {
     
         if(!encrypted) throw new ApiError(400,'','invalid Password')
     
-            res.cookie("token",userExist._id)
+            res.cookie("token",userExist._id,{
+                httpOnly: true,
+                sameSite:   process.env.NODE_ENV === 'dev' ? "lax" : "none",
+                secure:process.env.NODE_ENV === 'dev' ? false : true,
+            })
         res.json({user:userExist})
     
     
