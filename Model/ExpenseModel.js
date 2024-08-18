@@ -32,23 +32,23 @@ const ExpenseSchema = new mongoose.Schema({
     },
 
     year:{
-        type: Number,
-        default:new Date(Date.now()).getFullYear(),
+        type: Date,
+        default:  () => new Date(Date.now()).getFullYear(),
         },
     
         month:{
-            type: Number,
-            default:new Date().getMonth() + 1,
+            type: Date,
+            default: () => new Date().getMonth() + 1,
             },
     
             date:{
-                type: Number,
-                default:new Date().getDate(),
+                type: Date,
+                default:() => new Date().getDate(),
                 },
 
                 fullDate:{
-                    type:String,
-                    default: new Date().toDateString()
+                    type:Date,
+                    default: () => new Date().toDateString()
                 },
 
 
