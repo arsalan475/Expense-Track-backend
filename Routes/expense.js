@@ -56,7 +56,7 @@ expenseRouter.get('/currentdata',authenticated,async function(req,res){
     
         try{
             
-        const userData = await Expense.find({user:id}).skip(req.user.skip).sort({date:1});
+        const userData = await Expense.find({user:id}).skip(req.user.skip).sort({date:-1});
     
             if(!userData) throw new ApiError(404,'','not found')
 
