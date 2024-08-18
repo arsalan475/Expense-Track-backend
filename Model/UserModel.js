@@ -38,12 +38,24 @@ const userSchema = new mongoose.Schema({
     ],
 
     createdAt : {
-        type:Date,
-        default: () => new Date()
+        type:String ,
+      default: Date
     }
 })
 
+userSchema.pre('save',function(next){
+
+    this.createdAt = new Date(this.createdAt).toLocaleDateString();
+    
+             next()
+    })
+    
+
+
 userSchema.pre('save',async function(next){
+
+   
+
 if(!this.isModified('password')) return next()
 
    const hashed =  await   bcrypt.hash(this.password,10)

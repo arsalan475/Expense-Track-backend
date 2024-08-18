@@ -32,23 +32,23 @@ const ExpenseSchema = new mongoose.Schema({
     },
 
     year:{
-        type: Date,
-        default:  () => new Date(Date.now()).getFullYear(),
+        type: String,
+        default:  Date
         },
     
         month:{
-            type: Date,
-            default: () => new Date().getMonth() + 1,
+            type: String,
+            default: Date
             },
     
             date:{
-                type: Date,
-                default:() => new Date().getDate(),
+                type: String,
+                default:Date
                 },
 
                 fullDate:{
-                    type:Date,
-                    default: () => new Date().toDateString()
+                    type:String,
+                    default:Date
                 },
 
 
@@ -69,4 +69,17 @@ const ExpenseSchema = new mongoose.Schema({
 },{timestamps:true})
 
 
+
+
+
+
+
+ExpenseSchema.pre('save',function(next){
+   
+    this.date = new Date(this.date).getDate();
+    this.month = new Date(this.month).getMonth() + 1;
+    this.year = new Date(this.year).getFullYear();
+
+    next()
+})
 export const Expense = mongoose.model('Expense',ExpenseSchema)
