@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
     ],
 
     createdAt : {
-        type:Number,
+        type:Date,
         default: Date.now()
     }
 })
