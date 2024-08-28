@@ -38,14 +38,14 @@ const userSchema = new mongoose.Schema({
     ],
 
     createdAt : {
-        type:String ,
+        type:Date ,
       default: Date
     }
 })
 
 userSchema.pre('save',function(next){
 
-    this.createdAt = new Date(this.createdAt).toLocaleDateString();
+    this.createdAt = new Date(this.createdAt)
     
              next()
     })

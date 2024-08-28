@@ -76,10 +76,10 @@ const ExpenseSchema = new mongoose.Schema({
 
 ExpenseSchema.pre('save',function(next){
    
-    this.date = new Date(this.date).getDate();
-    this.month = new Date(this.month).getMonth() + 1;
-    this.year = new Date(this.year).getFullYear();
-
+    this.date = new Date().getDate();
+    this.month = new Date().getMonth() + 1;
+    this.year = new Date().getFullYear();
+    this.fullDate = new Date().toDateString()
     next()
 })
 export const Expense = mongoose.model('Expense',ExpenseSchema)

@@ -29,7 +29,7 @@ recordRouter.post('/addincome',authenticated,async function(req,res){
        const check =     await  User.save({validateBeforeSave:false})
        
         res.status(200).json({data : recordAdded,check:check})
-        }catch(error){
+        }catch(e){
             res.status(400).json(new ApiError(400,'',e.errors))
           
         }

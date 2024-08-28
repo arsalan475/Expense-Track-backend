@@ -23,7 +23,7 @@ try {
         
         const data = await user.create({userName,email,password})
         
-        if(!data) throw new ApiError('500','','Please try later')
+        if(!data) throw new ApiError('400','','Please try later')
             
             res.cookie("token",data._id,{
                 httpOnly: true,
@@ -31,7 +31,8 @@ try {
                 secure:process.env.NODE_ENV === 'dev' ? false : true,
             })
             
-        res.send('user Registered successfully')
+        
+        res.json({user:data})
 } catch (error) {
     res.json(new ApiError(400,'',error.message)).status(400)
 }
