@@ -1,4 +1,6 @@
+import { application } from "express";
 import mongoose from "mongoose";
+
 
 
 
@@ -22,11 +24,15 @@ const recordSchema = mongoose.Schema({
         required:true,
     },
 
-    
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'user',
+    },
 
    
     
 })
+
 
 
 export const record = mongoose.model('record',recordSchema)

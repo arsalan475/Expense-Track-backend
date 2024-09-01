@@ -93,5 +93,13 @@ recordRouter.post('/closerecord',authenticated,async function(req,res){
     }
 })
 
+recordRouter.get('/deleteRecord/:id',async function (req, res) {
+const deletedRecord = await record.findByIdAndDelete({_id:req.params.id});
+const deletedExpenses = await Expense.deleteMany({record: req.params.id})
+const removeRecordFromUser = await user.updateOne({ $pull: { userRecords: req.params.id } })
+
+res.json({removeRecordFromUser})
+
+})
 
 export {recordRouter}

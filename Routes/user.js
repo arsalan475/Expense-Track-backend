@@ -2,6 +2,8 @@ import express from 'express'
 import { user } from '../Model/UserModel.js'
 import { asyncHandler } from '../utils/asyncHandler.js'
 import { ApiError } from '../utils/apiError.js'
+import { Expense } from '../Model/ExpenseModel.js'
+import authenticated from '../middleware/auth.js'
 
 
 
@@ -76,8 +78,33 @@ try {
 
 
 
+userRouter.get('/deactivate',authenticated, async function (req, res) {
+   const {token} =  req.cookies
+  const deleted = await Expense.deleteMany({user:token})
+  const deactivatedUser = await user.findByIdAndDelete({_id:token})
+
+  const options = {
+    httpOnly: true,
+    sameSite:   process.env.NODE_ENV === 'dev' ? "lax" : "none",
+    secure:process.env.NODE_ENV === 'dev' ? false : true,
+  }
+ 
+ res.status(200).clearCookie("token",token,options).json({deactivatedUser}) //
+})
 
 
+
+userRouter.get('/logout',authenticated, async function (req, res) {
+    const {token} =  req.cookies
+ 
+   const options = {
+     httpOnly: true,
+     sameSite:   process.env.NODE_ENV === 'dev' ? "lax" : "none",
+     secure:process.env.NODE_ENV === 'dev' ? false : true,
+   }
+  
+  res.status(200).clearCookie("token",token,options).send('logout successfully') //
+ })
 
 export {userRouter}
 
